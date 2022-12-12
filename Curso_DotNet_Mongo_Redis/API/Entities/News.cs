@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using API.Entities.Enums;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace API.Entities
 {
@@ -26,9 +27,9 @@ namespace API.Entities
         public DateTime PublishDate { get; private set; }
 
         [BsonElement("active")]
-        public bool Active { get; private set; }
+        public EStatus Status { get; private set; }
 
-        public News(string hat, string title, string text, string author, string img, string link, DateTime publishDate, bool active)
+        public News(string hat, string title, string text, string author, string img, string link, EStatus status)
         {
             Hat = hat;
             Title = title;
@@ -37,7 +38,15 @@ namespace API.Entities
             Img = img;
             Link = link;
             PublishDate = DateTime.Now;
-            Active = active;
+            Status = status;
         }
+
+        public EStatus ChangeStatus(EStatus status) => status switch
+        {
+            EStatus.Active => EStatus.Active,
+            EStatus.Inactive => EStatus.Inactive,
+            EStatus.Draft => EStatus.Draft,
+            _ => throw new ArgumentOutOfRangeException()
+        };
     }
 }
