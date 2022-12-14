@@ -13,16 +13,16 @@ namespace API.Infra
             var database = client.GetDatabase(settings.DatabaseName);
 
             _model = database.GetCollection<TEntity>(typeof(TEntity).Name.ToLower());
-        }  
+        }
 
         public List<TEntity> Get()
         {
-            return _model.Find<TEntity>(active => true).ToList();
+            return _model.Find<TEntity>(x => x.Deleted == false).ToList();
         }
 
         public TEntity Get(string id)
         {
-            return _model.Find<TEntity>(x => x.Id == id).FirstOrDefault();
+            return _model.Find<TEntity>(x => x.Id == id && x.Deleted == false).FirstOrDefault();
         }
 
         public TEntity Create(TEntity news)
@@ -38,7 +38,9 @@ namespace API.Infra
 
         public void Remove(string id)
         {
-            _model.DeleteOne(x => x.Id == id);
-        }        
+            var entity = Get(id);
+            entity.Deleted = true;
+            _model.ReplaceOne(x => x.Id == id, entity);
+        }
     }
 }
