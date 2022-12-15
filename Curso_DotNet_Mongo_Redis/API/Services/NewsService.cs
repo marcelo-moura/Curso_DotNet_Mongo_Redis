@@ -29,7 +29,7 @@ namespace API.Services
         public NewsViewModel Create(NewsViewModel newsEntrada)
         {
             var entity = new News(newsEntrada.Hat, newsEntrada.Title, newsEntrada.Text,
-                                  newsEntrada.Author, newsEntrada.Img, newsEntrada.Link, newsEntrada.Status);
+                                  newsEntrada.Author, newsEntrada.Img, newsEntrada.Status);
 
             _newsRepository.Create(entity);
             return Get(entity.Id);

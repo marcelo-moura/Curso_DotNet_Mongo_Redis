@@ -10,5 +10,6 @@ namespace API.Entities
         public string Id { get; set; }
 
         public bool Deleted { get; set; }
+        public string Slug { get; set; }
     }
 }

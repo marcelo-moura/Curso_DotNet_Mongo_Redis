@@ -1,4 +1,5 @@
-﻿using API.Entities.Enums;
+﻿using API.Core;
+using API.Entities.Enums;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace API.Entities
@@ -20,25 +21,24 @@ namespace API.Entities
         [BsonElement("img")]
         public string Img { get; private set; }
 
-        [BsonElement("link")]
-        public string Link { get; private set; }
-
         [BsonElement("publishDate")]
         public DateTime PublishDate { get; private set; }
 
         [BsonElement("active")]
         public EStatus Status { get; private set; }
 
-        public News(string hat, string title, string text, string author, string img, string link, EStatus status)
+        public News(string hat, string title, string text, string author, string img, EStatus status)
         {
             Hat = hat;
             Title = title;
             Text = text;
             Author = author;
             Img = img;
-            Link = link;
             PublishDate = DateTime.Now;
+            Slug = Utils.GenerateSlug(Title);
             Status = status;
+
+            ValidateEntity();
         }
 
         public EStatus ChangeStatus(EStatus status) => status switch
@@ -48,5 +48,15 @@ namespace API.Entities
             EStatus.Draft => EStatus.Draft,
             _ => throw new ArgumentOutOfRangeException()
         };
+
+        public void ValidateEntity()
+        {
+            AssertionConcern.AssertArgumentNotEmpty(Title, "O título não pode estar vazio!");
+            AssertionConcern.AssertArgumentNotEmpty(Hat, "O chapéu não pode estar vazio!");
+            AssertionConcern.AssertArgumentNotEmpty(Text, "O texto não pode estar vazio!");
+
+            AssertionConcern.AssertArgumentLength(Title, 90, "O título deve ter até 90 caracteres!");
+            AssertionConcern.AssertArgumentLength(Hat, 40, "O chapéu deve ter até 40 caracteres!");
+        }
     }
 }
