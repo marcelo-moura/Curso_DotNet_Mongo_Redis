@@ -1,4 +1,5 @@
-﻿using API.Entities;
+﻿using API.Core;
+using API.Entities;
 using API.Entities.ViewModels;
 using AutoMapper;
 
@@ -10,6 +11,9 @@ namespace API.Mappers
         {
             CreateMap<News, NewsViewModel>();
             CreateMap<Video, VideoViewModel>();
+
+            CreateMap<Result<News>, Result<NewsViewModel>>();
+            CreateMap<Result<Video>, Result<VideoViewModel>>();
         }
     }
 }

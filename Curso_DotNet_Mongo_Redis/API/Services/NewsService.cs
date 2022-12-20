@@ -1,4 +1,5 @@
-﻿using API.Entities;
+﻿using API.Core;
+using API.Entities;
 using API.Entities.ViewModels;
 using API.Infra;
 using AutoMapper;
@@ -25,10 +26,15 @@ namespace API.Services
         {
             return _mapper.Map<NewsViewModel>(_newsRepository.Get(id));
         }
-        
+
         public NewsViewModel GetBySlug(string slug)
         {
-            return _mapper.Map<NewsViewModel>(_newsRepository.Get(slug));
+            return _mapper.Map<NewsViewModel>(_newsRepository.GetBySlug(slug));
+        }
+
+        public Result<NewsViewModel> GetPagedSearch(int page, int qtd)
+        {
+            return _mapper.Map<Result<NewsViewModel>>(_newsRepository.FindPagedSearch(page, qtd));
         }
 
         public NewsViewModel Create(NewsViewModel newsEntrada)

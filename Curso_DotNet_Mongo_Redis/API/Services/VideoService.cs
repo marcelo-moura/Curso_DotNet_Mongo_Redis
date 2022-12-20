@@ -1,4 +1,5 @@
-﻿using API.Entities;
+﻿using API.Core;
+using API.Entities;
 using API.Entities.ViewModels;
 using API.Infra;
 using AutoMapper;
@@ -25,10 +26,15 @@ namespace API.Services
         {
             return _mapper.Map<VideoViewModel>(_videoRepository.Get(id));
         }
-        
+
         public VideoViewModel GetBySlug(string slug)
         {
             return _mapper.Map<VideoViewModel>(_videoRepository.Get(slug));
+        }
+
+        public Result<VideoViewModel> GetPagedSearch(int page, int qtd)
+        {
+            return _mapper.Map<Result<VideoViewModel>>(_videoRepository.FindPagedSearch(page, qtd));
         }
 
         public VideoViewModel Create(VideoViewModel videoEntrada)

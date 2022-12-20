@@ -1,4 +1,5 @@
-﻿using API.Entities;
+﻿using API.Core;
+using API.Entities;
 using MongoDB.Driver;
 
 namespace API.Infra
@@ -28,6 +29,26 @@ namespace API.Infra
         public TEntity GetBySlug(string slug)
         {
             return _model.Find<TEntity>(x => x.Slug == slug && x.Deleted == false).FirstOrDefault();
+        }
+
+        public Result<TEntity> FindPagedSearch(int page, int qtd)
+        {
+            var result = new Result<TEntity>();
+            result.Page = page;
+            result.Qtd = qtd;
+
+            var filter = Builders<TEntity>.Filter.Eq(x => x.Deleted, false);
+
+            result.Data = _model.Find(filter)
+                                .SortByDescending(x => x.PublishDate)
+                                .Skip((page - 1) * qtd)
+                                .Limit(qtd)
+                                .ToList();
+
+            result.Total = _model.CountDocuments(filter);
+            result.TotalPages = result.Total / qtd;
+
+            return result;
         }
 
         public TEntity Create(TEntity news)

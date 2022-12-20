@@ -1,4 +1,5 @@
-﻿using API.Entities.ViewModels;
+﻿using API.Core;
+using API.Entities.ViewModels;
 using API.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,6 +33,12 @@ namespace API.Controllers
                 return NotFound();
 
             return news;
+        }
+
+        [HttpGet("{page}/{qtd}")]
+        public ActionResult<Result<NewsViewModel>> GetPagedSearch(int page, int qtd)
+        {
+            return _newsService.GetPagedSearch(page, qtd);
         }
 
         [HttpPost]
