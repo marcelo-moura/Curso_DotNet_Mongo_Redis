@@ -25,6 +25,11 @@ namespace API.Infra
             return _model.Find<TEntity>(x => x.Id == id && x.Deleted == false).FirstOrDefault();
         }
 
+        public TEntity GetBySlug(string slug)
+        {
+            return _model.Find<TEntity>(x => x.Slug == slug && x.Deleted == false).FirstOrDefault();
+        }
+
         public TEntity Create(TEntity news)
         {
             _model.InsertOne(news);

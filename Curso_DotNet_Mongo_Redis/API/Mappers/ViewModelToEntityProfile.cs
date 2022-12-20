@@ -8,7 +8,8 @@ namespace API.Mappers
     {
         public ViewModelToEntityProfile()
         {
-            CreateMap<NewsViewModel, News>();
+            CreateMap<NewsViewModel, News>()
+                .ForMember(d => d.Id, o => o.Ignore());
         }
     }
 }

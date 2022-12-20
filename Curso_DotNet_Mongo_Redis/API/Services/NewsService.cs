@@ -25,6 +25,11 @@ namespace API.Services
         {
             return _mapper.Map<NewsViewModel>(_newsRepository.Get(id));
         }
+        
+        public NewsViewModel GetBySlug(string slug)
+        {
+            return _mapper.Map<NewsViewModel>(_newsRepository.Get(slug));
+        }
 
         public NewsViewModel Create(NewsViewModel newsEntrada)
         {
