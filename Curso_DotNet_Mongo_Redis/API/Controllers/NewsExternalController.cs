@@ -18,6 +18,12 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        public ActionResult<List<NewsViewModel>> Get()
+        {
+            return _newsService.Get();
+        }
+
+        [HttpGet("{slug}")]
         public ActionResult<NewsViewModel> Get(string slug)
         {
             var news = _newsService.GetBySlug(slug);

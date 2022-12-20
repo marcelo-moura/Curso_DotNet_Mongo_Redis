@@ -22,6 +22,7 @@ builder.Services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOp
 builder.Services.AddSingleton(typeof(IMongoRepository<>), typeof(MongoRepository<>));
 
 builder.Services.AddScoped<INewsService, NewsService>();
+builder.Services.AddScoped<IVideoService, VideoService>();
 
 builder.Services.AddAutoMapper(typeof(ViewModelToEntityProfile), typeof(EntityToViewModelProfile));
 

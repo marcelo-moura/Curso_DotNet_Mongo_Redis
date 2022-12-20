@@ -10,6 +10,9 @@ namespace API.Mappers
         {
             CreateMap<NewsViewModel, News>()
                 .ForMember(d => d.Id, o => o.Ignore());
+
+            CreateMap<VideoViewModel, Video>()
+                .ForMember(d => d.Id, o => o.Ignore());
         }
     }
 }
