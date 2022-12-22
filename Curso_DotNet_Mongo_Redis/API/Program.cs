@@ -45,6 +45,7 @@ builder.Services.AddHealthChecksUI(options =>
 builder.Services.AddSingleton(typeof(IMongoRepository<>), typeof(MongoRepository<>));
 builder.Services.AddScoped<INewsService, NewsService>();
 builder.Services.AddScoped<IVideoService, VideoService>();
+builder.Services.AddScoped<IGalleryService, GalleryService>();
 
 builder.Services.AddSingleton<IMemoryCache, MemoryCache>();
 builder.Services.AddSingleton<ICacheService, CacheService>();

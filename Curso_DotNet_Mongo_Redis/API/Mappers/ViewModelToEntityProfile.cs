@@ -13,6 +13,9 @@ namespace API.Mappers
 
             CreateMap<VideoViewModel, Video>()
                 .ForMember(d => d.Id, o => o.Ignore());
+
+            CreateMap<GalleryViewModel, Gallery>()
+                .ForMember(d => d.Id, o => o.Ignore());
         }
     }
 }

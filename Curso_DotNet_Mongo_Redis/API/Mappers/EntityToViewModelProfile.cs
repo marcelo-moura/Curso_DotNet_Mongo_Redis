@@ -11,9 +11,11 @@ namespace API.Mappers
         {
             CreateMap<News, NewsViewModel>();
             CreateMap<Video, VideoViewModel>();
+            CreateMap<Gallery, GalleryViewModel>();
 
             CreateMap<Result<News>, Result<NewsViewModel>>();
             CreateMap<Result<Video>, Result<VideoViewModel>>();
+            CreateMap<Result<Gallery>, Result<GalleryViewModel>>();
         }
     }
 }
