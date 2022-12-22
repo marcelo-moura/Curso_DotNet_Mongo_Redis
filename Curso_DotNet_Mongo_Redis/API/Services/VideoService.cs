@@ -2,6 +2,7 @@
 using API.Entities;
 using API.Entities.ViewModels;
 using API.Infra;
+using API.Services.Interfaces;
 using AutoMapper;
 
 namespace API.Services

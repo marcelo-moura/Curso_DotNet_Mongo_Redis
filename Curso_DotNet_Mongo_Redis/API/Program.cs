@@ -1,6 +1,7 @@
 using API.Infra;
 using API.Mappers;
 using API.Services;
+using API.Services.Interfaces;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;

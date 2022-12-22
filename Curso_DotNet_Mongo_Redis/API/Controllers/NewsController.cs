@@ -1,6 +1,6 @@
 ﻿using API.Core;
 using API.Entities.ViewModels;
-using API.Services;
+using API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

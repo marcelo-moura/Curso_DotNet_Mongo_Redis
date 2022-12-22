@@ -1,7 +1,7 @@
 ﻿using API.Core;
 using API.Entities.ViewModels;
 
-namespace API.Services
+namespace API.Services.Interfaces
 {
     public interface IVideoService
     {
