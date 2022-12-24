@@ -94,13 +94,13 @@ namespace API.Services
         public void Remove(string id)
         {
             var keyCache = $"{keyForCache}/{id}";
-            _galleryRepository.Remove(keyCache);
+            _cacheService.Remove(keyCache);
 
             var galley = Get(id);
             keyCache = $"{keyForCache}/{galley.Slug}";
-            _galleryRepository.Remove(keyCache);
-
             _cacheService.Remove(keyCache);
+
+            _galleryRepository.Remove(id);
         }
     }
 }

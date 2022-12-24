@@ -25,8 +25,16 @@ builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection(na
 builder.Services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 #endregion
 
+#region [Cache]
+builder.Services.AddDistributedRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetSection("Redis:ConnectionString").Value;
+});
+#endregion
+
 #region [HealthCheck]
 builder.Services.AddHealthChecks()
+    .AddRedis(builder.Configuration.GetSection("Redis:ConnectionString").Value, tags: new string[] { "db", "data" })
     .AddMongoDb(builder.Configuration.GetSection("DatabaseSettings:ConnectionString").Value + "/" +
                 builder.Configuration.GetSection("DatabaseSettings:DatabaseName").Value,
                 name: "mongodb",
@@ -49,6 +57,7 @@ builder.Services.AddScoped<IGalleryService, GalleryService>();
 
 builder.Services.AddSingleton<IMemoryCache, MemoryCache>();
 builder.Services.AddSingleton<ICacheService, CacheService>();
+builder.Services.AddSingleton<ICacheRedisService, CacheRedisService>();
 #endregion
 
 #region [AutoMapper]

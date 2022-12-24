@@ -11,11 +11,14 @@ namespace API.Services
     {
         private readonly IMapper _mapper;
         private readonly IMongoRepository<News> _newsRepository;
+        private readonly ICacheRedisService _cacheRedisService;
+        private readonly string keyForCache = "news";
 
-        public NewsService(IMapper mapper, IMongoRepository<News> newsRepository)
+        public NewsService(IMapper mapper, IMongoRepository<News> newsRepository, ICacheRedisService cacheRedisService)
         {
             _mapper = mapper;
             _newsRepository = newsRepository;
+            _cacheRedisService = cacheRedisService;
         }
 
         public List<NewsViewModel> Get()
@@ -25,17 +28,44 @@ namespace API.Services
 
         public NewsViewModel Get(string id)
         {
-            return _mapper.Map<NewsViewModel>(_newsRepository.Get(id));
+            var keyCache = $"{keyForCache}/{id}";
+            var news = _cacheRedisService.Get<NewsViewModel>(keyCache);
+
+            if (news is null)
+            {
+                news = _mapper.Map<NewsViewModel>(_newsRepository.Get(id));
+                _cacheRedisService.Set(keyCache, news);
+            }
+
+            return news;
         }
 
         public NewsViewModel GetBySlug(string slug)
         {
-            return _mapper.Map<NewsViewModel>(_newsRepository.GetBySlug(slug));
+            var keyCache = $"{keyForCache}/{slug}";
+            var news = _cacheRedisService.Get<NewsViewModel>(keyCache);
+
+            if (news is null)
+            {
+                news = _mapper.Map<NewsViewModel>(_newsRepository.GetBySlug(slug));
+                _cacheRedisService.Set(keyCache, news);
+            }
+
+            return news;
         }
 
         public Result<NewsViewModel> GetPagedSearch(int page, int qtd)
         {
-            return _mapper.Map<Result<NewsViewModel>>(_newsRepository.FindPagedSearch(page, qtd));
+            var keyCache = $"{keyForCache}/{page}/{qtd}";
+            var news = _cacheRedisService.Get<Result<NewsViewModel>>(keyCache);
+
+            if (news is null)
+            {
+                news = _mapper.Map<Result<NewsViewModel>>(_newsRepository.FindPagedSearch(page, qtd));
+                _cacheRedisService.Set(keyCache, news);
+            }
+
+            return news;
         }
 
         public NewsViewModel Create(NewsViewModel newsEntrada)
@@ -44,16 +74,31 @@ namespace API.Services
                                   newsEntrada.Author, newsEntrada.Img, newsEntrada.Status);
 
             _newsRepository.Create(entity);
+
+            var keyCache = $"{keyForCache}/{entity.Slug}";
+            _cacheRedisService.Set(keyCache, entity);
+
             return Get(entity.Id);
         }
 
         public void Update(string id, NewsViewModel newsEntrada)
         {
+            var keyCache = $"{keyForCache}/{id}";
             _newsRepository.Update(id, _mapper.Map<News>(newsEntrada));
+
+            _cacheRedisService.Remove(keyCache);
+            _cacheRedisService.Set(keyCache, newsEntrada);
         }
 
         public void Remove(string id)
         {
+            var keyCache = $"{keyForCache}/{id}";
+            _cacheRedisService.Remove(keyCache);
+
+            var galley = Get(id);
+            keyCache = $"{keyForCache}/{galley.Slug}";
+            _cacheRedisService.Remove(keyCache);
+
             _newsRepository.Remove(id);
         }
     }
