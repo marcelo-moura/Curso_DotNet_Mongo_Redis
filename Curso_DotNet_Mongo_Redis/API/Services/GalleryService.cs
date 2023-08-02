@@ -70,16 +70,16 @@ namespace API.Services
 
         public GalleryViewModel Create(GalleryViewModel galleryEntrada)
         {
-            var entity = new Gallery(galleryEntrada.Title, galleryEntrada.Legend, galleryEntrada.Author,
+            var gallery = new Gallery(galleryEntrada.Title, galleryEntrada.Legend, galleryEntrada.Author,
                                      galleryEntrada.Tags, galleryEntrada.Status, galleryEntrada.GalleryImages,
                                      galleryEntrada.Thumb);
 
-            _galleryRepository.Create(entity);
+            _galleryRepository.Create(gallery);
 
-            var keyCache = $"{keyForCache}/{entity.Slug}";
-            _cacheService.Set(keyCache, entity);
+            var keyCache = $"{keyForCache}/{gallery.Slug}";
+            _cacheService.Set(keyCache, gallery);
 
-            return Get(entity.Id);
+            return Get(gallery.Id);
         }
 
         public void Update(string id, GalleryViewModel galleryEntrada)

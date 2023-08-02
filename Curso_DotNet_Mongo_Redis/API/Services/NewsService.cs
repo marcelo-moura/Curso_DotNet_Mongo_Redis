@@ -70,15 +70,15 @@ namespace API.Services
 
         public NewsViewModel Create(NewsViewModel newsEntrada)
         {
-            var entity = new News(newsEntrada.Hat, newsEntrada.Title, newsEntrada.Text,
+            var news = new News(newsEntrada.Hat, newsEntrada.Title, newsEntrada.Text,
                                   newsEntrada.Author, newsEntrada.Img, newsEntrada.Status);
 
-            _newsRepository.Create(entity);
+            _newsRepository.Create(news);
 
-            var keyCache = $"{keyForCache}/{entity.Slug}";
-            _cacheRedisService.Set(keyCache, entity);
+            var keyCache = $"{keyForCache}/{news.Slug}";
+            _cacheRedisService.Set(keyCache, news);
 
-            return Get(entity.Id);
+            return Get(news.Id);
         }
 
         public void Update(string id, NewsViewModel newsEntrada)
@@ -95,8 +95,8 @@ namespace API.Services
             var keyCache = $"{keyForCache}/{id}";
             _cacheRedisService.Remove(keyCache);
 
-            var galley = Get(id);
-            keyCache = $"{keyForCache}/{galley.Slug}";
+            var news = Get(id);
+            keyCache = $"{keyForCache}/{news.Slug}";
             _cacheRedisService.Remove(keyCache);
 
             _newsRepository.Remove(id);

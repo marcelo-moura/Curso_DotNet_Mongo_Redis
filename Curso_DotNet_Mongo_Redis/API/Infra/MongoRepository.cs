@@ -51,10 +51,10 @@ namespace API.Infra
             return result;
         }
 
-        public TEntity Create(TEntity news)
+        public TEntity Create(TEntity entity)
         {
-            _model.InsertOne(news);
-            return news;
+            _model.InsertOne(entity);
+            return entity;
         }
 
         public void Update(string id, TEntity entity)

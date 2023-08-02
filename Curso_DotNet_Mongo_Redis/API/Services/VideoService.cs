@@ -40,11 +40,11 @@ namespace API.Services
 
         public VideoViewModel Create(VideoViewModel videoEntrada)
         {
-            var entity = new Video(videoEntrada.Hat, videoEntrada.Title, videoEntrada.Author,
+            var video = new Video(videoEntrada.Hat, videoEntrada.Title, videoEntrada.Author,
                                   videoEntrada.Thumbnail, videoEntrada.UrlVideo, videoEntrada.Status);
 
-            _videoRepository.Create(entity);
-            return Get(entity.Id);
+            _videoRepository.Create(video);
+            return Get(video.Id);
         }
 
         public void Update(string id, VideoViewModel videoEntrada)
